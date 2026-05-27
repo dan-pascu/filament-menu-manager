@@ -20,7 +20,7 @@ A powerful **Filament v4 & v5** plugin for managing navigation menus with:
 | Dependency | Version |
 |---|---|
 | PHP | `^8.2` |
-| Laravel | `^12.0 \| ^13.0` |
+| Laravel | `^11.0 \| ^12.0 \| ^13.0` |
 | Filament | `^4.0 \| ^5.0` |
 | Livewire | `^3.0 \| ^4.0` |
 
@@ -38,7 +38,8 @@ composer require notebrainslab/filament-menu-manager
 
 ```bash
 php artisan filament-menu-manager:install
-# or manually:
+
+# Or manually:
 php artisan vendor:publish --tag="filament-menu-manager-migrations"
 php artisan migrate
 ```
@@ -55,11 +56,33 @@ public function panel(Panel $panel): Panel
             FilamentMenuManagerPlugin::make()
                 ->locations([
                     'primary' => 'Primary',
-                    'footer'  => 'Footer',
+                    'footer' => 'Footer',
                 ])
         );
 }
 ```
+
+---
+
+## Upgrade Guide
+
+### Upgrade from v1.0 → v2.0
+
+If you are upgrading from **v1.0**, run the following commands to install the latest version and publish the updated configuration file.
+
+### Step 1: Update the package
+
+```bash
+composer require notebrainslab/filament-menu-manager:^2.0
+```
+
+### Step 2: Republish the configuration
+
+```bash
+php artisan vendor:publish --tag="filament-menu-manager-config" --force
+```
+
+> The `--force` flag will overwrite your existing configuration file with the latest v2.0 version.
 
 ---
 
@@ -83,15 +106,23 @@ php artisan vendor:publish --tag="filament-menu-manager-views"
 
 ```php
 FilamentMenuManagerPlugin::make()
-    ->locations(['primary' => 'Primary', 'footer' => 'Footer'])
-    ->modelSources([\App\Models\Post::class, \App\Models\Page::class])
+    ->locations([
+        'primary' => 'Primary',
+        'footer' => 'Footer',
+    ])
+    ->modelSources([
+        \App\Models\Post::class,
+        \App\Models\Page::class,
+    ])
     ->navigationGroup('Content')
     ->navigationIcon('heroicon-o-bars-3')
     ->navigationSort(10)
     ->navigationLabel('Menus')
     ->authentication(function () {
-        return auth()->user()->can('View:MenuManagerPage'); 
-        // Ecpected boolean value true/false based on your permission matrix
+        return auth()->user()->can('View:MenuManagerPage');
+
+        // Expected boolean value: true or false
+        // Based on your permission matrix
     }),
 ```
 
@@ -109,10 +140,26 @@ class Post extends Model
     use HasMenuItems;
 
     // Optional: override the defaults
-    public function getMenuLabel(): string  { return $this->title; }
-    public function getMenuUrl(): string    { return route('posts.show', $this); }
-    public function getMenuTarget(): string { return '_self'; }
-    public function getMenuIcon(): ?string  { return 'heroicon-o-document'; }
+
+    public function getMenuLabel(): string
+    {
+        return $this->title;
+    }
+
+    public function getMenuUrl(): string
+    {
+        return route('posts.show', $this);
+    }
+
+    public function getMenuTarget(): string
+    {
+        return '_self';
+    }
+
+    public function getMenuIcon(): ?string
+    {
+        return 'heroicon-o-document';
+    }
 }
 ```
 
@@ -120,7 +167,9 @@ Then register the model in the plugin:
 
 ```php
 FilamentMenuManagerPlugin::make()
-    ->modelSources([\App\Models\Post::class])
+    ->modelSources([
+        \App\Models\Post::class,
+    ])
 ```
 
 ---
@@ -130,15 +179,22 @@ FilamentMenuManagerPlugin::make()
 ```blade
 @php
     $manager = app(\NoteBrainsLab\FilamentMenuManager\MenuManager::class);
-    $menus   = $manager->menusForLocation('primary');
-    $menu    = $menus->first();
-    $tree    = $menu?->getTree() ?? [];
+
+    $menus = $manager->menusForLocation('primary');
+
+    $menu = $menus->first();
+
+    $tree = $menu?->getTree() ?? [];
 @endphp
 
 @foreach($tree as $item)
-    <a href="{{ $item['url'] }}" target="{{ $item['target'] }}">{{ $item['title'] }}</a>
+    <a href="{{ $item['url'] }}"
+       target="{{ $item['target'] }}">
+        {{ $item['title'] }}
+    </a>
+
     @if(!empty($item['children']))
-        {{-- render children --}}
+        {{-- Render child items --}}
     @endif
 @endforeach
 ```
