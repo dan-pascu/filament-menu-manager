@@ -14,6 +14,8 @@ class FilamentMenuManagerPlugin implements Plugin
     protected \BackedEnum|string|null $navigationIcon = null;
     protected ?int $navigationSort = null;
     protected string|\Illuminate\Contracts\Support\Htmlable|null $navigationLabel = null;
+    protected ?bool $shouldAuthenticate = null;
+    protected ?\Closure $authCallback = null;
 
     // -------------------------------------------------------------------------
     // Static constructor (fluent API entry point)
@@ -112,6 +114,17 @@ class FilamentMenuManagerPlugin implements Plugin
         return $this;
     }
 
+    public function authentication(bool|\Closure $condition): static
+    {
+        if ($condition instanceof \Closure) {
+            $this->authCallback = $condition;
+            $this->shouldAuthenticate = true;
+        } else {
+            $this->shouldAuthenticate = $condition;
+        }
+        return $this;
+    }
+
     public function getNavigationGroup(): \UnitEnum|string|null
     {
         return $this->navigationGroup;
@@ -130,5 +143,15 @@ class FilamentMenuManagerPlugin implements Plugin
     public function getNavigationLabel(): string|\Illuminate\Contracts\Support\Htmlable|null
     {
         return $this->navigationLabel;
+    }
+
+    public function shouldAuthenticate(): bool
+    {
+        return $this->shouldAuthenticate ?? config('filament-menu-manager.authentication', true);
+    }
+
+    public function getAuthCallback(): ?\Closure
+    {
+        return $this->authCallback;
     }
 }

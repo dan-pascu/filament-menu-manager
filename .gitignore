@@ -8,3 +8,16 @@ Thumbs.db
 # Keep dist/ compiled assets — consumers don't need to run npm
 # Uncomment below if you prefer consumers to build their own:
 # /resources/dist
+
+# ==============================================================================
+# AI Engineering Environment Rules
+# ==============================================================================
+# Keep core architectures and specifications tracked, but ignore runtime state
+.gsd/STATE.md
+.gsd/JOURNAL.md
+.gsd/logs/
+
+# Ralph Loop local execution state
+progress.txt
+
+# DO NOT IGNORE: .agent, .agents, .gemini, SPEC.md, ROADMAP.md

@@ -18,6 +18,21 @@ class MenuManagerPage extends Page implements HasForms
 {
     use InteractsWithForms;
 
+    public static function canAccess(): bool
+    {
+        $plugin = \NoteBrainsLab\FilamentMenuManager\FilamentMenuManagerPlugin::get();
+
+        if (! $plugin->shouldAuthenticate()) {
+            return true;
+        }
+
+        if ($callback = $plugin->getAuthCallback()) {
+            return (bool) app()->call($callback);
+        }
+
+        return filament()->auth()->check();
+    }
+
     protected string $view = 'filament-menu-manager::pages.menu-manager';
 
     protected static \UnitEnum|string|null $navigationGroup = 'Settings';

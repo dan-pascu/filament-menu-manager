@@ -77,4 +77,13 @@ return [
     'auto_save'          => true,
     'auto_save_debounce' => 800,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guard
+    |--------------------------------------------------------------------------
+    | When set to true, the plugin requires user authentication to access the
+    | navigation items and the page route. When false, the page is public.
+    */
+    'authentication'     => true,
+
 ];

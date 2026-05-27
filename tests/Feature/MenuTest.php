@@ -5,7 +5,7 @@ use NoteBrainsLab\FilamentMenuManager\Models\MenuItem;
 use NoteBrainsLab\FilamentMenuManager\Models\MenuLocation;
 use NoteBrainsLab\FilamentMenuManager\Tests\TestCase;
 
-uses(TestCase::class)->in(__DIR__);
+uses(TestCase::class);
 
 // -------------------------------------------------------------------------
 // MenuLocation Tests

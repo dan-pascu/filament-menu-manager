@@ -20,7 +20,7 @@ A powerful **Filament v4 & v5** plugin for managing navigation menus with:
 | Dependency | Version |
 |---|---|
 | PHP | `^8.2` |
-| Laravel | `^12.0` |
+| Laravel | `^12.0 \| ^13.0` |
 | Filament | `^4.0 \| ^5.0` |
 | Livewire | `^3.0 \| ^4.0` |
 
@@ -88,7 +88,11 @@ FilamentMenuManagerPlugin::make()
     ->navigationGroup('Content')
     ->navigationIcon('heroicon-o-bars-3')
     ->navigationSort(10)
-    ->navigationLabel('Menus');
+    ->navigationLabel('Menus')
+    ->authentication(function () {
+        return auth()->user()->can('View:MenuManagerPage'); 
+        // Ecpected boolean value true/false based on your permission matrix
+    }),
 ```
 
 ---

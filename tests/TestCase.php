@@ -12,6 +12,8 @@ abstract class TestCase extends BaseTestCase
         return [
             \Livewire\LivewireServiceProvider::class,
             \Filament\Support\SupportServiceProvider::class,
+            \Filament\FilamentServiceProvider::class,
+            \NoteBrainsLab\FilamentMenuManager\Tests\TestPanelProvider::class,
             FilamentMenuManagerServiceProvider::class,
         ];
     }
