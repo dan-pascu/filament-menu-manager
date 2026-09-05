@@ -43,7 +43,11 @@ class MenuManagerPage extends Page implements HasForms
 
     public static function getNavigationGroup(): \UnitEnum|string|null
     {
-        return \NoteBrainsLab\FilamentMenuManager\FilamentMenuManagerPlugin::get()->getNavigationGroup() ?? static::$navigationGroup;
+        $plugin = \NoteBrainsLab\FilamentMenuManager\FilamentMenuManagerPlugin::get();
+
+        return $plugin->hasNavigationGroup()
+            ? $plugin->getNavigationGroup()
+            : static::$navigationGroup;
     }
 
     public static function getNavigationIcon(): \BackedEnum|string|null
@@ -59,6 +63,11 @@ class MenuManagerPage extends Page implements HasForms
     public static function getNavigationSort(): ?int
     {
         return \NoteBrainsLab\FilamentMenuManager\FilamentMenuManagerPlugin::get()->getNavigationSort() ?? static::$navigationSort;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return \NoteBrainsLab\FilamentMenuManager\FilamentMenuManagerPlugin::get()->getShouldRegisterNavigation();
     }
 
     // -------------------------------------------------------------------------

@@ -11,9 +11,11 @@ class FilamentMenuManagerPlugin implements Plugin
     protected array $locations   = [];
     protected array $modelSources = [];
     protected \UnitEnum|string|null $navigationGroup = null;
+    protected bool $hasNavigationGroup = false;
     protected \BackedEnum|string|null $navigationIcon = null;
     protected ?int $navigationSort = null;
     protected string|\Illuminate\Contracts\Support\Htmlable|null $navigationLabel = null;
+    protected bool $shouldRegisterNavigation = true;
     protected ?bool $shouldAuthenticate = null;
     protected ?\Closure $authCallback = null;
 
@@ -93,6 +95,7 @@ class FilamentMenuManagerPlugin implements Plugin
     public function navigationGroup(\UnitEnum|string|null $group): static
     {
         $this->navigationGroup = $group;
+        $this->hasNavigationGroup = true;
         return $this;
     }
 
@@ -114,6 +117,12 @@ class FilamentMenuManagerPlugin implements Plugin
         return $this;
     }
 
+    public function shouldRegisterNavigation(bool $value): static
+    {
+        $this->shouldRegisterNavigation = $value;
+        return $this;
+    }
+
     public function authentication(bool|\Closure $condition): static
     {
         if ($condition instanceof \Closure) {
@@ -130,6 +139,11 @@ class FilamentMenuManagerPlugin implements Plugin
         return $this->navigationGroup;
     }
 
+    public function hasNavigationGroup(): bool
+    {
+        return $this->hasNavigationGroup;
+    }
+
     public function getNavigationIcon(): \BackedEnum|string|null
     {
         return $this->navigationIcon;
@@ -143,6 +157,11 @@ class FilamentMenuManagerPlugin implements Plugin
     public function getNavigationLabel(): string|\Illuminate\Contracts\Support\Htmlable|null
     {
         return $this->navigationLabel;
+    }
+
+    public function getShouldRegisterNavigation(): bool
+    {
+        return $this->shouldRegisterNavigation;
     }
 
     public function shouldAuthenticate(): bool
